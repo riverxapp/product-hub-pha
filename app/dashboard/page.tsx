@@ -22,39 +22,39 @@ type CrmRecord = {
 };
 
 const initialRecords: CrmRecord[] = [
-  {
-    id: "cust-101",
-    type: "customer",
-    name: "Avery Chen",
-    company: "Northstar Labs",
-    email: "avery@northstarlabs.com",
-    phone: "+1 (555) 012-9001",
-    status: "active",
-    owner: "Mia",
-    value: 42000,
-    notes: "Renewal due next quarter.",
-    updatedAt: "2026-04-20",
-  },
-  {
-    id: "lead-204",
-    type: "lead",
-    name: "Jordan Patel",
-    company: "Helio Systems",
-    email: "jordan@helio.systems",
-    phone: "+1 (555) 013-4409",
-    status: "prospect",
-    owner: "Noah",
-    value: 18000,
-    notes: "Requested product demo and pricing.",
-    updatedAt: "2026-04-19",
-  },
-];
+{
+  id: "cust-101",
+  type: "customer",
+  name: "Avery Chen",
+  company: "Northstar Labs",
+  email: "avery@northstarlabs.com",
+  phone: "+1 (555) 012-9001",
+  status: "active",
+  owner: "Mia",
+  value: 42000,
+  notes: "Renewal due next quarter.",
+  updatedAt: "2026-04-20"
+},
+{
+  id: "lead-204",
+  type: "lead",
+  name: "Jordan Patel",
+  company: "Helio Systems",
+  email: "jordan@helio.systems",
+  phone: "+1 (555) 013-4409",
+  status: "prospect",
+  owner: "Noah",
+  value: 18000,
+  notes: "Requested product demo and pricing.",
+  updatedAt: "2026-04-19"
+}];
+
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: 0
   }).format(value);
 }
 
@@ -83,7 +83,7 @@ export default function DashboardPage() {
     status: "prospect",
     owner: "",
     value: 0,
-    notes: "",
+    notes: ""
   });
 
   const totals = React.useMemo(() => {
@@ -104,7 +104,7 @@ export default function DashboardPage() {
       status: "prospect",
       owner: "",
       value: 0,
-      notes: "",
+      notes: ""
     });
   }
 
@@ -113,13 +113,13 @@ export default function DashboardPage() {
     const payload: CrmRecord = {
       ...form,
       id: editingId ?? `record-${Date.now()}`,
-      updatedAt: new Date().toISOString().slice(0, 10),
+      updatedAt: new Date().toISOString().slice(0, 10)
     };
 
     setRecords((current) =>
-      editingId
-        ? current.map((record) => (record.id === editingId ? payload : record))
-        : [payload, ...current],
+    editingId ?
+    current.map((record) => record.id === editingId ? payload : record) :
+    [payload, ...current]
     );
     resetForm();
   }
@@ -135,7 +135,7 @@ export default function DashboardPage() {
       status: record.status,
       owner: record.owner,
       value: record.value,
-      notes: record.notes,
+      notes: record.notes
     });
   }
 
@@ -146,7 +146,33 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"><header className="rounded-lg border border-border bg-card p-4 shadow-sm sm:p-6" aria-label="Dashboard header">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="space-y-1">
+                <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+                  CRM Dashboard
+                </p>
+                <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Customers and leads</h1>
+                <p className="max-w-2xl text-sm text-muted-foreground">
+                  Track pipeline activity, manage contacts, and keep customer records current from a single place.
+                </p>
+              </div>
+              <nav className="flex flex-wrap items-center gap-2" aria-label="Dashboard navigation">
+                <Button type="button" variant="outline" className="h-9">
+                  Overview
+                </Button>
+                <Button type="button" variant="outline" className="h-9">
+                  Customers
+                </Button>
+                <Button type="button" variant="outline" className="h-9">
+                  Leads
+                </Button>
+                <Button type="button" className="h-9">
+                  New record
+                </Button>
+              </nav>
+            </div>
+          </header>
         <section className="rounded-lg border border-border bg-card p-6 shadow-sm">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
@@ -192,8 +218,7 @@ export default function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {records.map((record) => (
-                    <tr key={record.id} className="border-b border-border/60 align-top">
+                  {records.map((record) => <tr key={record.id} className="border-b border-border/60 align-top">
                       <td className="py-4 pr-4">
                         <div className="font-medium">{record.name}</div>
                         <div className="text-muted-foreground">{record.company}</div>
@@ -218,8 +243,7 @@ export default function DashboardPage() {
                           </Button>
                         </div>
                       </td>
-                    </tr>
-                  ))}
+                    </tr>)}
                 </tbody>
               </table>
             </div>
@@ -233,21 +257,13 @@ export default function DashboardPage() {
             <form className="space-y-4" onSubmit={submitRecord}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Type">
-                  <select
-                    className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                    value={form.type}
-                    onChange={(e) => setForm((current) => ({ ...current, type: e.target.value as RecordType }))}
-                  >
+                  <select className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.type} onChange={(e) => setForm((current) => ({ ...current, type: e.target.value as RecordType }))}>
                     <option value="customer">Customer</option>
                     <option value="lead">Lead</option>
                   </select>
                 </Field>
                 <Field label="Status">
-                  <select
-                    className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                    value={form.status}
-                    onChange={(e) => setForm((current) => ({ ...current, status: e.target.value as RecordStatus }))}
-                  >
+                  <select className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.status} onChange={(e) => setForm((current) => ({ ...current, status: e.target.value as RecordStatus }))}>
                     <option value="prospect">Prospect</option>
                     <option value="active">Active</option>
                     <option value="at-risk">At risk</option>
@@ -255,30 +271,14 @@ export default function DashboardPage() {
                   </select>
                 </Field>
               </div>
-              {(["name", "company", "email", "phone", "owner"] as const).map((key) => (
-                <Field key={key} label={key.charAt(0).toUpperCase() + key.slice(1)}>
-                  <input
-                    className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                    value={form[key]}
-                    onChange={(e) => setForm((current) => ({ ...current, [key]: e.target.value }))}
-                  />
-                </Field>
-              ))}
+              {(["name", "company", "email", "phone", "owner"] as const).map((key) => <Field key={key} label={key.charAt(0).toUpperCase() + key.slice(1)}>
+                  <input className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form[key]} onChange={(e) => setForm((current) => ({ ...current, [key]: e.target.value }))} />
+                </Field>)}
               <Field label="Value">
-                <input
-                  type="number"
-                  min="0"
-                  className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                  value={form.value}
-                  onChange={(e) => setForm((current) => ({ ...current, value: Number(e.target.value) }))}
-                />
+                <input type="number" min="0" className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.value} onChange={(e) => setForm((current) => ({ ...current, value: Number(e.target.value) }))} />
               </Field>
               <Field label="Notes">
-                <textarea
-                  className="min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  value={form.notes}
-                  onChange={(e) => setForm((current) => ({ ...current, notes: e.target.value }))}
-                />
+                <textarea className="min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={form.notes} onChange={(e) => setForm((current) => ({ ...current, notes: e.target.value }))} />
               </Field>
               <div className="flex gap-2">
                 <Button type="submit">{editingId ? "Save changes" : "Create record"}</Button>
@@ -290,30 +290,30 @@ export default function DashboardPage() {
           </div>
         </section>
       </main>
-    </div>
-  );
+    </div>);
+
 }
 
 function Field({
   label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+  children
+
+
+
+}: {label: string;children: React.ReactNode;}) {
   return (
     <label className="block space-y-1.5">
       <span className="text-sm font-medium">{label}</span>
       {children}
-    </label>
-  );
+    </label>);
+
 }
 
-function Stat({ label, value }: { label: string; value: React.ReactNode }) {
+function Stat({ label, value }: {label: string;value: React.ReactNode;}) {
   return (
     <div className="rounded-md border border-border bg-background px-3 py-2">
       <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
       <div className="text-base font-semibold">{value}</div>
-    </div>
-  );
+    </div>);
+
 }
