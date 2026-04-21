@@ -2,12 +2,12 @@ import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 
 export default function Home() {
-  return (
-    <div className="relative flex min-h-screen flex-col bg-background">
-      <Navbar />
-      <main className="flex flex-1 flex-col">
-        <HeroSection />
-      </main>
-    </div>
-  );
+  return <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 text-foreground sm:px-6 lg:px-8"><main className="w-full max-w-6xl"><section className="grid gap-10 overflow-hidden rounded-3xl border border-border bg-card shadow-sm lg:grid-cols-2"><div className="flex flex-col justify-between bg-slate-950 px-8 py-10 text-slate-50 sm:px-10 lg:px-12"><div className="space-y-6"><div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-200">Internal CRM Access</div><div className="space-y-4"><h1 className="max-w-lg text-3xl font-semibold tracking-tight sm:text-4xl">Sign in to your internal CRM</h1><p className="max-w-xl text-sm leading-6 text-slate-300 sm:text-base">Access customer records, pipeline updates, and team activity from one secure workspace built for internal operations.</p></div></div><div className="grid gap-4 pt-4 sm:grid-cols-2"><div className="rounded-2xl border border-white/10 bg-white/5 p-4"><p className="text-sm font-medium text-white">Centralized workflows</p><p className="mt-2 text-sm leading-6 text-slate-300">Keep sales, support, and account data in sync without switching tools.</p></div><div className="rounded-2xl border border-white/10 bg-white/5 p-4"><p className="text-sm font-medium text-white">Dashboard ready</p><p className="mt-2 text-sm leading-6 text-slate-300">Jump directly into your CRM dashboard after sign-in.</p></div></div></div><div className="flex items-center justify-center px-6 py-10 sm:px-10 lg:px-12"><div className="w-full max-w-md space-y-8"><div className="space-y-2"><h2 className="text-2xl font-semibold tracking-tight">Welcome back</h2><p className="text-sm text-muted-foreground">Use your work email and password to continue.</p></div><form className="space-y-5" action="/dashboard" method="get"><div className="space-y-2"><label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email address</label><input id="email" name="email" type="email" autoComplete="email" required className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="name@company.com" /></div><div className="space-y-2"><div className="flex items-center justify-between"><label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Password</label><a href="/dashboard" className="text-sm font-medium text-slate-900 underline-offset-4 hover:underline">Skip to dashboard</a></div><input id="password" name="password" type="password" autoComplete="current-password" required className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="••••••••" /></div><button type="submit" className="inline-flex h-11 w-full items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-slate-50 shadow transition-colors hover:bg-slate-900/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">Sign in to dashboard</button><p className="text-center text-sm text-muted-foreground">This is an internal system. Your sign-in will route directly to the CRM dashboard.</p></form></div></div></section></main></div>;
+
+
+
+
+
+
+
 }
