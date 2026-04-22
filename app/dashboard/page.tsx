@@ -142,9 +142,9 @@ export default function DashboardPage() {
     };
 
     setRecords((current) =>
-      editingId ?
-        current.map((record) => record.id === editingId ? payload : record) :
-        [payload, ...current]
+    editingId ?
+    current.map((record) => record.id === editingId ? payload : record) :
+    [payload, ...current]
     );
 
     setIsSubmitting(false);
@@ -173,61 +173,61 @@ export default function DashboardPage() {
   }
 
   return <div className="min-h-screen bg-slate-50 text-slate-950">
-    <div className="p-4">
-      <Button onClick={openModal}>Add record</Button>
+    <div className="p-4"><section aria-labelledby="crm-editing-heading" className="mb-6 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
+  <h1 id="crm-editing-heading" className="text-2xl font-extrabold mb-4">CRM Records Editing</h1>
+  <p className="mb-4 text-slate-700">Easily manage your CRM records. Your changes will be saved instantly.</p>
+</section>
+      <Button onClick={openModal} className={"bg-slate-900 text-white font-bold shadow-lg hover:bg-slate-800 focus:ring-4 focus:ring-blue-600 focus:ring-opacity-50"}>Add record</Button>
     </div>
 
     {/* The rest of the dashboard UI here */}
     {/* For brevity, the existing table or UI is assumed preserved */}
 
-    {isModalOpen ? <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="new-record-title" aria-describedby="new-record-description" onKeyDown={handleDialogKeyDown} onClick={closeModal}>
-      <div className="absolute inset-0 bg-slate-950/50" aria-hidden="true" />
-      <div className="relative w-full max-w-2xl rounded-lg border border-slate-200 bg-white p-6 shadow-lg" onClick={(event) => event.stopPropagation()}>
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <div>
-            <h2 id="new-record-title" className="text-lg font-semibold">Create record</h2>
-            <p id="new-record-description" className="text-sm text-slate-600">Add a new CRM record using the existing dashboard record shape.</p>
-          </div>
-          <Button type="button" variant="outline" onClick={closeModal} aria-label="Close dialog">Close</Button>
-        </div>
-        <form className="space-y-4" onSubmit={submitRecord} noValidate>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Type">
-              <select required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.type} onChange={(e) => setForm((current) => ({ ...current, type: e.target.value as RecordType }))}>
-                <option value="customer">Customer</option>
-                <option value="lead">Lead</option>
-              </select>
-            </Field>
-            <Field label="Status">
-              <select required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.status} onChange={(e) => setForm((current) => ({ ...current, status: e.target.value as RecordStatus }))}>
-                <option value="prospect">Prospect</option>
-                <option value="active">Active</option>
-                <option value="at-risk">At risk</option>
-                <option value="closed">Closed</option>
-              </select>
-            </Field>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Name"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.name} onChange={(e) => setForm((current) => ({ ...current, name: e.target.value }))} /></Field>
-            <Field label="Company"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.company} onChange={(e) => setForm((current) => ({ ...current, company: e.target.value }))} /></Field>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Email"><input required type="email" className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.email} onChange={(e) => setForm((current) => ({ ...current, email: e.target.value }))} /></Field>
-            <Field label="Phone"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.phone} onChange={(e) => setForm((current) => ({ ...current, phone: e.target.value }))} /></Field>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Owner"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.owner} onChange={(e) => setForm((current) => ({ ...current, owner: e.target.value }))} /></Field>
-            <Field label="Value"><input required type="number" min="0" className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.value} onChange={(e) => setForm((current) => ({ ...current, value: Number(e.target.value) }))} /></Field>
-          </div>
-          <Field label="Notes"><textarea required className="min-h-24 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.notes} onChange={(e) => setForm((current) => ({ ...current, notes: e.target.value }))} /></Field>
-          <div className="flex items-center gap-2">
-            <Button type="button" variant="outline" onClick={closeModal}>Cancel</Button>
-            <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Creating..." : (editingId ? "Save changes" : "Create record")}</Button>
-            {submitError ? <p className="text-sm text-red-600" role="alert">{submitError}</p> : null}
-          </div>
-        </form>
-      </div>
-    </div> : null}
+    {isModalOpen ? <section aria-live="polite" aria-atomic="true" className="mb-6 p-4 bg-blue-50 border border-blue-300 rounded">
+  {isSubmitting ? <p className="text-blue-700 font-semibold">Saving changes...</p> : submitError ? <p className="text-red-700 font-semibold">Error: {submitError}</p> : null}
+</section> :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    null}
 
   </div>;
 }
