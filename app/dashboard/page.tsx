@@ -144,103 +144,103 @@ export default function DashboardPage() {
     if (editingId === id) resetForm();
   }
 
-  return <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" role="dialog" aria-modal="true" aria-labelledby="new-record-title" aria-describedby="new-record-description" onClick={() => setIsModalOpen(false)}>
-  <div className="w-full max-w-2xl rounded-lg border border-border bg-card p-6 shadow-lg" onClick={(event) => event.stopPropagation()}>
-    <div className="mb-4 flex items-start justify-between gap-4">
+  return <div className="min-h-screen bg-slate-50 text-slate-950">
+  <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h2 id="new-record-title" className="text-lg font-semibold">Create record</h2>
-        <p id="new-record-description" className="text-sm text-muted-foreground">Add a new CRM record with the same fields used throughout the dashboard.</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
+        <p className="mt-1 text-sm text-slate-600">Manage CRM records, review pipeline health, and keep activity in sync.</p>
       </div>
-      <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)} aria-label="Close dialog">Close</Button>
+      <Button type="button" onClick={"() => setIsModalOpen(true)"}>Create record</Button>
     </div>
-    <form className="space-y-4" onSubmit={submitRecord}>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Type"><select required className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.type} onChange={(e) => setForm((current) => ({ ...current, type: e.target.value as RecordType }))}><option value="customer">Customer</option><option value="lead">Lead</option></select></Field>
-        <Field label="Status"><select required className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.status} onChange={(e) => setForm((current) => ({ ...current, status: e.target.value as RecordStatus }))}><option value="prospect">Prospect</option><option value="active">Active</option><option value="at-risk">At risk</option><option value="closed">Closed</option></select></Field>
+
+    <div className="grid gap-4 md:grid-cols-3">
+      <Stat label="Customers" value={totals.customers} />
+      <Stat label="Leads" value={totals.leads} />
+      <Stat label="Pipeline" value={formatCurrency(totals.pipeline)} />
+    </div>
+
+    <div className="mt-8 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="border-b border-slate-200 px-4 py-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-600">Records</h2>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Name"><input required className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.name} onChange={(e) => setForm((current) => ({ ...current, name: e.target.value }))} /></Field>
-        <Field label="Company"><input required className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.company} onChange={(e) => setForm((current) => ({ ...current, company: e.target.value }))} /></Field>
+      <div className="divide-y divide-slate-200">
+        {records.map((record) => <div key={record.id} className="grid gap-4 px-4 py-4 md:grid-cols-[1.3fr_1fr_1fr_auto] md:items-center">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className={cn("inline-flex rounded-full border px-2 py-0.5 text-xs font-medium", badgeClass(record.status))}>{record.status}</span>
+                <span className="text-xs text-slate-500">{record.type}</span>
+              </div>
+              <div className="mt-2 font-medium">{record.name}</div>
+              <div className="text-sm text-slate-600">{record.company}</div>
+            </div>
+            <div className="text-sm text-slate-600">
+              <div>{record.email}</div>
+              <div>{record.phone}</div>
+            </div>
+            <div className="text-sm text-slate-600">
+              <div>Owner: {record.owner}</div>
+              <div>Updated: {record.updatedAt}</div>
+              <div>Value: {formatCurrency(record.value)}</div>
+            </div>
+            <div className="flex justify-start gap-2 md:justify-end">
+              <Button type="button" variant="outline" onClick={() => editRecord(record)}>Edit</Button>
+              <Button type="button" variant="destructive" onClick={() => deleteRecord(record.id)}>Delete</Button>
+            </div>
+          </div>)}
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Email"><input required type="email" className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.email} onChange={(e) => setForm((current) => ({ ...current, email: e.target.value }))} /></Field>
-        <Field label="Phone"><input required className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.phone} onChange={(e) => setForm((current) => ({ ...current, phone: e.target.value }))} /></Field>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Owner"><input required className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.owner} onChange={(e) => setForm((current) => ({ ...current, owner: e.target.value }))} /></Field>
-        <Field label="Value"><input required type="number" min="0" className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.value} onChange={(e) => setForm((current) => ({ ...current, value: Number(e.target.value) }))} /></Field>
-      </div>
-      <Field label="Notes"><textarea required className="min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={form.notes} onChange={(e) => setForm((current) => ({ ...current, notes: e.target.value }))} /></Field>
-      <div className="flex gap-2">
-        <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-        <Button type="submit">Create record</Button>
-      </div>
-    </form>
+    </div>
+
+    {isModalOpen ? <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="new-record-title" aria-describedby="new-record-description" onKeyDown={handleDialogKeyDown} onClick={closeModal}>
+        <div className="absolute inset-0 bg-slate-950/50" aria-hidden="true" />
+        <div className="relative w-full max-w-2xl rounded-lg border border-slate-200 bg-white p-6 shadow-lg" onClick={(event) => event.stopPropagation()}>
+          <div className="mb-4 flex items-start justify-between gap-4">
+            <div>
+              <h2 id="new-record-title" className="text-lg font-semibold">Create record</h2>
+              <p id="new-record-description" className="text-sm text-slate-600">Add a new CRM record using the existing dashboard record shape.</p>
+            </div>
+            <Button type="button" variant="outline" onClick={closeModal} aria-label="Close dialog">Close</Button>
+          </div>
+          <form className="space-y-4" onSubmit={submitRecord} noValidate>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Type">
+                <select required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.type} onChange={(e) => setForm((current) => ({ ...current, type: e.target.value as RecordType }))}>
+                  <option value="customer">Customer</option>
+                  <option value="lead">Lead</option>
+                </select>
+              </Field>
+              <Field label="Status">
+                <select required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.status} onChange={(e) => setForm((current) => ({ ...current, status: e.target.value as RecordStatus }))}>
+                  <option value="prospect">Prospect</option>
+                  <option value="active">Active</option>
+                  <option value="at-risk">At risk</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </Field>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Name"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.name} onChange={(e) => setForm((current) => ({ ...current, name: e.target.value }))} /></Field>
+              <Field label="Company"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.company} onChange={(e) => setForm((current) => ({ ...current, company: e.target.value }))} /></Field>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Email"><input required type="email" className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.email} onChange={(e) => setForm((current) => ({ ...current, email: e.target.value }))} /></Field>
+              <Field label="Phone"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.phone} onChange={(e) => setForm((current) => ({ ...current, phone: e.target.value }))} /></Field>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Owner"><input required className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.owner} onChange={(e) => setForm((current) => ({ ...current, owner: e.target.value }))} /></Field>
+              <Field label="Value"><input required type="number" min="0" className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.value} onChange={(e) => setForm((current) => ({ ...current, value: Number(e.target.value) }))} /></Field>
+            </div>
+            <Field label="Notes"><textarea required className="min-h-24 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" value={form.notes} onChange={(e) => setForm((current) => ({ ...current, notes: e.target.value }))} /></Field>
+            <div className="flex items-center gap-2">
+              <Button type="button" variant="outline" onClick={closeModal}>Cancel</Button>
+              <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Creating..." : "Create record"}</Button>
+              {submitError ? <p className="text-sm text-red-600" role="alert">{submitError}</p> : null}
+            </div>
+          </form>
+        </div>
+      </div> : null}
   </div>
 </div>;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
